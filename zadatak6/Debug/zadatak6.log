@@ -1,0 +1,3 @@
+﻿  main.c
+c:\users\dsenta\source\repos\zadatak6\zadatak6\main.c(88): warning C4716: 'searchArticleInRange': must return a value
+  zadatak6.vcxproj -> C:\Users\dsenta\source\repos\zadatak6\Debug\zadatak6.exe
