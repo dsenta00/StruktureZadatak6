@@ -6,15 +6,15 @@
 
 #define MAX_LINE (1024)
 
-int initializeBill(BillP bill) {
+int InitializeBill(BillP bill) {
     bill->date = NULL;
     bill->next = NULL;
     memset(bill->name, 0, MAX_BILL_NAME);
-    initializeArticle(&bill->articleHead);
+    InitializeArticle(&bill->articleHead);
     return EXIT_SUCCESS;
 }
 
-BillP createBill(char *billFileName) {
+BillP CreateBill(char *billFileName) {
     FILE *fp = NULL;
     BillP bill = NULL;
     int status = EXIT_SUCCESS;
@@ -33,15 +33,15 @@ BillP createBill(char *billFileName) {
         return NULL;
     }
 
-    initializeBill(bill);
+    InitializeBill(bill);
 
     strcpy(bill->name, billFileName);
 
     fgets(fileLine, MAX_LINE, fp);
-    bill->date = createDateFromString(fileLine);
+    bill->date = CreateDateFromString(fileLine);
     if (!bill->date) {
         fclose(fp);
-        deleteBill(bill);
+        DeleteBill(bill);
         return NULL;
     }
 
@@ -53,14 +53,14 @@ BillP createBill(char *billFileName) {
             continue;
         }
 
-        article = createArticleFromString(fileLine);
+        article = CreateArticleFromString(fileLine);
         if (!article) {
             fclose(fp);
-            deleteBill(bill);
+            DeleteBill(bill);
             return NULL;
         }
 
-        insertArticleSorted(&bill->articleHead, article);
+        InsertArticleSorted(&bill->articleHead, article);
     }
 
     fclose(fp);
@@ -68,34 +68,34 @@ BillP createBill(char *billFileName) {
     return bill;
 }
 
-int insertBillAfter(BillP position, BillP bill) {
+int InsertBillAfter(BillP position, BillP bill) {
     bill->next = position->next;
     position->next = bill;
 
     return EXIT_SUCCESS;
 }
 
-int insertBillSorted(BillP head, BillP bill) {
+int InsertBillSorted(BillP head, BillP bill) {
     BillP position = head;
 
-    while (position->next != NULL && datecmp(position->next->date, bill->date) < 0) {
+    while (position->next != NULL && Datecmp(position->next->date, bill->date) < 0) {
         position = position->next;
     }
 
-    insertBillAfter(position, bill);
+    InsertBillAfter(position, bill);
 
     return EXIT_SUCCESS;
 }
 
 
-int readBillsFromFile(BillP head, char *fileName) {
+int ReadBillsFromFile(BillP head, char *fileName) {
     FILE *fp = NULL;
     char fileLine[MAX_LINE] = { 0 };
 
     fp = fopen(fileName, "r");
     if (!fp) {
         perror("File with bills not opened!");
-        return -1;
+        return FILE_WITH_BILLS_NOT_OPENED;
     }
 
     while (!feof(fp)) {
@@ -106,14 +106,14 @@ int readBillsFromFile(BillP head, char *fileName) {
             continue;
         }
 
-        bill = createBill(fileLine);
+        bill = CreateBill(fileLine);
         if (!bill) {
             fclose(fp);
-            deleteAllBills(head);
-            return -2;
+            DeleteAllBills(head);
+            return CREATE_BILL_FAILED;
         }
 
-        insertBillSorted(head, bill);
+        InsertBillSorted(head, bill);
     }
 
     fclose(fp);
@@ -121,35 +121,35 @@ int readBillsFromFile(BillP head, char *fileName) {
     return EXIT_SUCCESS;
 }
 
-int printBill(BillP bill) {
+int PrintBill(BillP bill) {
     ArticleP article = NULL;
 
     printf("\t============================\r\n");
     printf("\t\t** Date => ");
-    printDate(bill->date);
+    PrintDate(bill->date);
     printf("\r\n");
     printf("\t\t** Articles (name, count, price) \r\n");
 
     for (article = bill->articleHead.next; article != NULL; article = article->next) {
         printf("\t\t\t * ");
-        printArticle(article);
+        PrintArticle(article);
         printf("\r\n");
     }
 
     return EXIT_SUCCESS;
 }
 
-int printAllBills(BillP head) {
+int PrintAllBills(BillP head) {
     BillP bill = NULL;
 
     for (bill = head->next; bill != NULL; bill = bill->next) {
-        printBill(bill);
+        PrintBill(bill);
     }
 
     return EXIT_SUCCESS;
 }
 
-int deleteBill(BillP bill) {
+int DeleteBill(BillP bill) {
     if (!bill) {
         return EXIT_SUCCESS;
     }
@@ -158,11 +158,11 @@ int deleteBill(BillP bill) {
         free(bill->date);
     }
 
-    deleteAllArticles(&bill->articleHead);
+    DeleteAllArticles(&bill->articleHead);
     free(bill);
 }
 
-int deleteBillAfter(BillP position) {
+int DeleteBillAfter(BillP position) {
     BillP toDelete = position->next;
 
     if (!toDelete) {
@@ -170,14 +170,14 @@ int deleteBillAfter(BillP position) {
     }
 
     position->next = toDelete->next;
-    deleteBill(toDelete);
+    DeleteBill(toDelete);
 
     return EXIT_SUCCESS;
 }
 
-int deleteAllBills(BillP head) {
+int DeleteAllBills(BillP head) {
     while (head->next) {
-        deleteBillAfter(head);
+        DeleteBillAfter(head);
     }
 
     return EXIT_SUCCESS;

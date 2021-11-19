@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int initializeFilter(FilterP filter) {
+int InitializeFilter(FilterP filter) {
     filter->from = NULL;
     filter->to = NULL;
     memset(filter->name, MAX_ARTICLE_NAME, 0);
@@ -10,7 +10,7 @@ int initializeFilter(FilterP filter) {
     return EXIT_SUCCESS;
 }
 
-FilterP createFilter(char *dateFromStr, char *dateToStr, char *articleName) {
+FilterP CreateFilter(char *dateFromStr, char *dateToStr, char *articleName) {
     FilterP filter = NULL;
 
     filter = (FilterP)malloc(sizeof(Filter));
@@ -19,17 +19,17 @@ FilterP createFilter(char *dateFromStr, char *dateToStr, char *articleName) {
         return NULL;
     }
 
-    initializeFilter(filter);
+    InitializeFilter(filter);
 
-    filter->from = createDateFromString(dateFromStr);
+    filter->from = CreateDateFromString(dateFromStr);
     if (!filter->from) {
-        deleteFilter(filter);
+        DeleteFilter(filter);
         return NULL;
     }
 
-    filter->to = createDateFromString(dateToStr);
+    filter->to = CreateDateFromString(dateToStr);
     if (!filter->to) {
-        deleteFilter(filter);
+        DeleteFilter(filter);
         return NULL;
     }
 
@@ -38,7 +38,7 @@ FilterP createFilter(char *dateFromStr, char *dateToStr, char *articleName) {
     return filter;
 }
 
-int deleteFilter(FilterP filter) {
+int DeleteFilter(FilterP filter) {
     if (filter->from) {
         free(filter->from);
     }

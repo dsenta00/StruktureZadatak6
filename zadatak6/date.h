@@ -1,10 +1,11 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef DATE_H
+#define DATE_H
+#include "errors.h"
 #include <stdbool.h>
 
 #define YEAR_STRING_LENGTH (4)           // 1999
 #define DAY_STRING_LENGTH (2)            // 08
-#define MONTH_STRING_LENGTH (2)          // 13
+#define MONTH_STRING_LENGTH (2)          // 12
 #define DASH_LENGTH (1)                  // -
 #define NULL_TERMINATING_CHAR_LENGTH (1) // \0
 #define MAX_DATE_AS_STRING (YEAR_STRING_LENGTH + DASH_LENGTH + MONTH_STRING_LENGTH + DASH_LENGTH + DAY_STRING_LENGTH + NULL_TERMINATING_CHAR_LENGTH)
@@ -17,10 +18,10 @@ typedef struct _date {
     int day;
 } Date;
 
-DateP createDateFromString(char *str);
-int dateToString(char *destination, DateP date);
-int printDate(DateP date);
-int datecmp(DateP date1, DateP date2);
-bool isDateInsideOfRange(DateP date, DateP from, DateP to);
+DateP CreateDateFromString(char *str);
+int DateToString(char *destination, DateP date);
+int PrintDate(DateP date);
+int Datecmp(DateP date1, DateP date2);
+bool IsDateInsideOfRange(DateP date, DateP from, DateP to);
 
 #endif

@@ -14,21 +14,22 @@ int main(int argc, char *argv[]) {
     char fileName[MAX_FILE_NAME] = { 0 };
     int status = EXIT_SUCCESS;
 
-    initializeBill(&head);
+    InitializeBill(&head);
 
-    printf("Please insert filename ->\t");
-    scanf(" %s", fileName);
-    
-    status = readBillsFromFile(&head, fileName);
+    do {
+        printf("Please insert filename ->\t");
+        scanf(" %s", fileName);
 
+        status = ReadBillsFromFile(&head, fileName);
+    } while (status > EXIT_SUCCESS);
     if (status != EXIT_SUCCESS) {
         return EXIT_FAILURE;
     }
     printf("\r\n"
         "\t ** Successfully read %s:\r\n\r\n", fileName);
-    printAllBills(&head);
+    PrintAllBills(&head);
     userSearchArticleInRange(&head);
-    deleteAllBills(&head);
+    DeleteAllBills(&head);
 
     return EXIT_SUCCESS;
 }
@@ -47,11 +48,11 @@ int userSearchArticleInRange(BillP head) {
         printf("\t Your input: ");
         scanf(" %s %s %s", article, dateFromString, dateToString);
 
-        filter = createFilter(dateFromString, dateToString, article);
+        filter = CreateFilter(dateFromString, dateToString, article);
     } while (!filter);
 
     searchArticleInRange(head, filter);
-    deleteFilter(filter);
+    DeleteFilter(filter);
 
     return EXIT_SUCCESS;
 }
@@ -64,12 +65,12 @@ int searchArticleInRange(BillP head, FilterP filter) {
     printf("\t     Result:\r\n");
 
     for (bill = head->next; bill != NULL; bill = bill->next) {
-        if (isDateInsideOfRange(bill->date, filter->from, filter->to)) {
-            ArticleP article = findArticleByName(&bill->articleHead, filter->name);
+        if (IsDateInsideOfRange(bill->date, filter->from, filter->to)) {
+            ArticleP article = FindArticleByName(&bill->articleHead, filter->name);
 
             if (article) {
                 printf("\t\t- ");
-                printArticle(article);
+                PrintArticle(article);
                 printf("\r\n");
                 totalCount += article->count;
                 totalPrice += article->count * article->price;

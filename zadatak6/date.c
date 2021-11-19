@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-DateP createDateFromString(char *str) {
+DateP CreateDateFromString(char *str) {
     DateP date = NULL;
     int status = 0;
 
@@ -34,10 +34,10 @@ DateP createDateFromString(char *str) {
     return date;
 }
 
-int dateToString(char *destination, DateP date) {
+int DateToString(char *destination, DateP date) {
     if (!destination) {
         printf("Destination string is null!\r\n");
-        return -1;
+        return STRING_DESTINATION_NULL;
     }
 
     if (!date) {
@@ -49,16 +49,16 @@ int dateToString(char *destination, DateP date) {
     return EXIT_SUCCESS;
 }
 
-int printDate(DateP date) {
+int PrintDate(DateP date) {
     char dateAsString[MAX_DATE_AS_STRING] = { 0 };
    
-    dateToString(dateAsString, date);
+    DateToString(dateAsString, date);
     printf(dateAsString);
 
     return EXIT_SUCCESS;
 }
 
-int datecmp(DateP date1, DateP date2) {
+int Datecmp(DateP date1, DateP date2) {
     int result = date1->year - date2->year;
 
     if (result == 0) {
@@ -72,6 +72,6 @@ int datecmp(DateP date1, DateP date2) {
     return result;
 }
 
-bool isDateInsideOfRange(DateP date, DateP from, DateP to) {
-    return datecmp(date, from) >= 0 && datecmp(date, to) <= 0;
+bool IsDateInsideOfRange(DateP date, DateP from, DateP to) {
+    return Datecmp(date, from) >= 0 && Datecmp(date, to) <= 0;
 }
